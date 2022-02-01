@@ -1,8 +1,7 @@
 from threading import Thread
+from api_keys import test_api_key
 from main_functions import *
 
-
-test_api_key ='b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
 
 test_url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
 
@@ -11,7 +10,7 @@ key_url = 'https://sandbox-api.coinmarketcap.com/v1/key/info'
 test_parameters = {
 	'start': '1',
 	'limit': '5000',
-	'convert': 'USD'	
+	'convert': 'USD'
 }
 
 test_headers = {
@@ -33,7 +32,7 @@ def test_main(id=1):
 
 	epoch_duration = int(input('Enter epoch: '))
 	start_timer(epoch_duration=epoch_duration)
-	
+
 	while True:
 		try:
 			print(f'snapshot was taken at {time.ctime()}')
