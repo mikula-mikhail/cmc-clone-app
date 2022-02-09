@@ -36,12 +36,13 @@ def main(ids=1):
         print(f'\tFinished {id} ... spend {et - st: 0.5f} seconds!')
 
     epoch_duration = 2 * 3_600.0
-    start_timer(epoch_duration=epoch_duration)
+    start_timer(epoch_duration=epoch_duration / 2)
     # whole_day = 3_600 * 24
     # epoch_ids = whole_day // epoch_duration
     epoch_ids = 12
+    system_exit = False
 
-    while True:
+    while not system_exit:
         try:
             th = [Thread(target=json, args=(id,), daemon=True) for id in range(1, 13)]
             for t in th:
@@ -49,11 +50,13 @@ def main(ids=1):
             time.sleep(epoch_duration * epoch_ids - 1000)
         except KeyboardInterrupt:
             error_message('exit() was raised!')
+            system_exit = True
             sys.exit()
         finally:
             # ids += epoch_ids
             print('FINISHED epoch!')
-            start_timer()
+            if not system_exit:
+                start_timer()
 
 if __name__ == '__main__':
     main()
