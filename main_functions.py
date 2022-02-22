@@ -1,10 +1,22 @@
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-import json
 import time, datetime
-import os, sys
+import logging
+import json
+import sys
+import os
 
 path = os.path.dirname(os.path.realpath(__file__))
+
+logging.basicConfig(filename=f'{dir_path}/crypto_api.log', filemode='a', level=logging.DEBUG,
+                    format='[%(asctime)s]:%(levelname)s:[%(name)s] >> %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S')
+# logging.debug('this is a debug message')
+# logging.exception()
+
+
+MY_API_KEY = os.getenv('MY_API_KEY')
+# 'b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
 
 
 def error_print(function):
