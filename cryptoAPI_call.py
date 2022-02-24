@@ -2,10 +2,11 @@ from main_functions import *
 from threading import Thread
 
 
-# url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
-url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+MY_API_KEY = os.environ['coinmarketcap_key']
 
-MY_API_KEY = 'b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
+test_url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+TEST_API_KEY = 'b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
 
 key_url = 'https://pro-api.coinmarketcap.com/v1/key/info'
 
