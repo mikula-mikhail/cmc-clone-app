@@ -8,7 +8,7 @@ import os
 
 path = os.path.dirname(os.path.realpath(__file__))
 
-logging.basicConfig(filename=f'{dir_path}/crypto_api.log', filemode='a', level=logging.DEBUG,
+logging.basicConfig(filename=f'{path}/crypto_api.log', filemode='a', level=logging.DEBUG,
                     format='[%(asctime)s]:%(levelname)s:[%(name)s] >> %(message)s',
                     datefmt='%d-%b-%y %H:%M:%S')
 # logging.debug('this is a debug message')
@@ -19,45 +19,74 @@ MY_API_KEY = os.getenv('MY_API_KEY')
 # 'b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
 
 
+api_call_time = [x for x in range(0, 24, 2)]
+
+
 def error_print(function):
 	def wrapper(*args, **kwargs):
-		print('\n\t####### ERROR ########', end='\n\t')
+		now = time.strftime("%d-%b-%y %H:%M:%S", time.localtime())
+		print(f'\n[{now}] >> ERROR', end='\n\n')
 		function(*args, **kwargs)
-		print('\t######################')
 	return wrapper
+
 
 @error_print
 def error_message(error):
-	print(error)
+	logging.error(error)
 
 
-def start_timer(epoch_duration=3_600.0):
+def shedule():
 	try:
-		prog_start = time.time()
-		dt = datetime.datetime.fromtimestamp(prog_start)
+		now = time.time()
+		dt = datetime.datetime.fromtimestamp(now)
+
+		for x in api_call_time:
+			if x >= dt.hour:
+				index = api_call_time.index(x)
+				break
+			else:
+				index = 0
+			shortEpoch = (True if x-dt.hour else False)
+
+		epoch_duration = (3_600 if shortEpoch else 3_600 * 2)
 		delta = epoch_duration - abs(dt.minute * 60 + dt.second)
-		print(f'Waiting {delta} seconds till {time.strftime("%H:%M:%S", time.localtime(prog_start+delta))}')
-		time.sleep(delta)
+
+		print(f'Waiting {delta} seconds till {time.strftime("%H:%M:%S", time.localtime(now+delta))}')
+
+		check_logging_dir('quotes')
+
+		return index+1, delta
+
+	except Exception as e:
+		error_message(e)
+		sys.exit()
+
+
+def timer(delay):
+	try:
+		time.sleep(delay)
 	except KeyboardInterrupt:
 		error_message('exit() was raised!')
 		sys.exit()
-	finally:
-		check_logging_dir('requests_logs')
 
 
-def save_json_request(text, log_dir):
+def save_json_request(text, log_dir, id):
 	file_name = f'{path}/{log_dir}/{time.time()}.txt'
+	try:
+		f = open(file_name, 'w', encoding='utf-8', errors=None)
+		f.write(text)
+		f.close()
+		logging.info(f'Successfully writen id {id}')
+	except Exception as e:
+		error_message(f'FAILED to write id {id}')
 
-	f = open(file_name, 'w', encoding='utf-8', errors=None)
-	f.write(text)
-	f.close()
 
 
 def check_logging_dir(requests_logs):
 	log_path = f'{path}/{requests_logs}'
 	if not os.path.exists(log_path):
 		os.makedirs(log_path)
-		error_message('Directory was created')
+		logging.info('Directory was created')
 
 
 def json_request(url, headers, parameters):
@@ -67,7 +96,8 @@ def json_request(url, headers, parameters):
 	try:
 		response = session.get(url, params=parameters)
 		data = json.loads(response.text)
+
+		return data
+
 	except (ConnectionError, Timeout, TooManyRedirects) as e:
 		error_message(e)
-
-	return data
