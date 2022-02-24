@@ -15,7 +15,7 @@ logging.basicConfig(filename=f'{path}/crypto_api.log', filemode='a', level=loggi
 # logging.exception()
 
 
-MY_API_KEY = os.getenv('MY_API_KEY')
+# MY_API_KEY = os.getenv('MY_API_KEY')
 # 'b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
 
 
@@ -41,12 +41,13 @@ def shedule():
 		dt = datetime.datetime.fromtimestamp(now)
 
 		for x in api_call_time:
-			if x >= dt.hour:
+			if x > dt.hour:
 				index = api_call_time.index(x)
 				break
 			else:
 				index = 0
-			shortEpoch = (True if x-dt.hour else False)
+				
+		shortEpoch = (False if api_call_time[index]-dt.hour-1 else True)
 
 		epoch_duration = (3_600 if shortEpoch else 3_600 * 2)
 		delta = epoch_duration - abs(dt.minute * 60 + dt.second)

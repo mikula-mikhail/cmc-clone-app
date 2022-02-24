@@ -27,13 +27,13 @@ headers = {
 def main(epoch_id=1):
 
     def json(id):
-        delay = (id - 1) * epoch_duration
+        delay = (id - epoch_id) * epoch_duration
         time.sleep(delay)
         print(f'snapshot was taken at {time.ctime()}')
         st = time.perf_counter()
         print(f'\tStarting json() id: {id}...')
         data = json_request(url, headers, parameters)
-        save_json_request(str(data), 'requests_logs', id)
+        save_json_request(str(data), 'quotes', id)
         et = time.perf_counter()
         print(f'\tFinished {id} ... spend {et - st: 0.5f} seconds!')
 
@@ -58,7 +58,6 @@ def main(epoch_id=1):
         finally:
             print('FINISHED epoch!')
             
-
 
 if __name__ == '__main__':
     main()
