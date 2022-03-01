@@ -47,18 +47,19 @@ def main(epoch_id=1):
 
         epoch_id, delay = shedule()
         timer(delay)
+        mainThreadSleep = epoch_duration*(epoch_ids - epoch_id-1) - 1000;
 
         try:
             th = [Thread(target=json, args=(id,), daemon=True) for id in range(epoch_id, 13)]
             for t in th:
                 t.start()
-            time.sleep(epoch_duration * epoch_ids - 1000)
+            time.sleep(mainThreadSleep)
         except KeyboardInterrupt:
             error_message('exit() was raised!')
             sys.exit()
         finally:
             print('FINISHED epoch!')
-            
+
 
 if __name__ == '__main__':
     main()

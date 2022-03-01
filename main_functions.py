@@ -46,7 +46,7 @@ def shedule():
 				break
 			else:
 				index = 0
-				
+
 		shortEpoch = (False if api_call_time[index]-dt.hour-1 else True)
 
 		epoch_duration = (3_600 if shortEpoch else 3_600 * 2)
