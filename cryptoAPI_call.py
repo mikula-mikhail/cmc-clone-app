@@ -41,7 +41,7 @@ def main(epoch_id=1):
 
     epoch_duration = 2 * 3_600
     epoch_ids = 12
-
+    json(1)
 
     while True:
 
