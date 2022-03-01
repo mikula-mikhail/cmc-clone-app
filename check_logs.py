@@ -2,7 +2,7 @@ import os
 from time import localtime, asctime
 
 dir_name = os.path.dirname(os.path.realpath(__file__))
-path = os.path.join(dir_name, 'requests_logs')
+path = os.path.join(dir_name, 'quotes')
 
 for root, directories, files in os.walk(path, topdown=True):
     i = 0

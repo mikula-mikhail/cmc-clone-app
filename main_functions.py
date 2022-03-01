@@ -35,7 +35,7 @@ def error_message(error):
 	logging.error(error)
 
 
-def shedule():
+def shedule(index=0):
 	try:
 		now = time.time()
 		dt = datetime.datetime.fromtimestamp(now)
@@ -44,8 +44,6 @@ def shedule():
 			if x > dt.hour:
 				index = api_call_time.index(x)
 				break
-			else:
-				index = 0
 				
 		shortEpoch = (False if api_call_time[index]-dt.hour-1 else True)
 

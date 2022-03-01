@@ -38,10 +38,10 @@ def main(epoch_id=1):
         et = time.perf_counter()
         print(f'\tFinished {id} ... spend {et - st: 0.5f} seconds!')
 
-
+	
     epoch_duration = 2 * 3_600
     epoch_ids = 12
-
+    json(1)
 
     while True:
 
@@ -52,7 +52,7 @@ def main(epoch_id=1):
             th = [Thread(target=json, args=(id,), daemon=True) for id in range(epoch_id, 13)]
             for t in th:
                 t.start()
-            time.sleep(epoch_duration * epoch_ids - 1000)
+            time.sleep(epoch_duration * (epoch_ids - epoch_id-1) - 1000)	# 86_400 sec in one day
         except KeyboardInterrupt:
             error_message('exit() was raised!')
             sys.exit()
