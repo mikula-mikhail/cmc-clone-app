@@ -16,7 +16,6 @@ logging.basicConfig(filename=f'{path}/crypto_api.log', filemode='a', level=loggi
 
 
 # MY_API_KEY = os.getenv('MY_API_KEY')
-# 'b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'
 
 
 api_call_time = [x for x in range(0, 24, 2)]
@@ -44,9 +43,11 @@ def shedule(index=0):
 			if x > dt.hour:
 				index = api_call_time.index(x)
 				break
+		
+		T = api_call_time[index]
+		if index == 0: T = 24
 
-		shortEpoch = (False if api_call_time[index]-dt.hour-1 else True)
-
+		shortEpoch = (False if T-dt.hour-1 else True)
 		epoch_duration = (3_600 if shortEpoch else 3_600 * 2)
 		delta = epoch_duration - abs(dt.minute * 60 + dt.second)
 
@@ -76,7 +77,7 @@ def save_json_request(text, log_dir, id):
 		f.write(text)
 		f.close()
 		logging.info(f'Successfully writen id {id}')
-	except Exception as e:
+	except Exception:
 		error_message(f'FAILED to write id {id}')
 
 
@@ -99,4 +100,4 @@ def json_request(url, headers, parameters):
 		return data
 
 	except (ConnectionError, Timeout, TooManyRedirects) as e:
-		error_message(e)
+	        error_message(e)

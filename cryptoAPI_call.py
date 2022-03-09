@@ -41,19 +41,19 @@ def main(epoch_id=1):
 
     epoch_duration = 2 * 3_600
     epoch_ids = 12
-    json(1)
+    # json(1)
 
     while True:
 
         epoch_id, delay = shedule()
         timer(delay)
-        mainThreadSleep = epoch_duration*(epoch_ids - epoch_id-1) - 1000;
+        mainThreadSleep = epoch_duration*(epoch_ids - epoch_id-1) - 1000
 
         try:
             th = [Thread(target=json, args=(id,), daemon=True) for id in range(epoch_id, 13)]
             for t in th:
                 t.start()
-            time.sleep(mainThreadSleep)
+            time.sleep(10000000)
         except KeyboardInterrupt:
             error_message('exit() was raised!')
             sys.exit()
